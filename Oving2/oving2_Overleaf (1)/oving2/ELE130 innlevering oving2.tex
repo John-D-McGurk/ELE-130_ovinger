@@ -1,0 +1,580 @@
+\documentclass[answers,11pt]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage[norsk]{babel}
+\usepackage[T1]{fontenc}
+% \renewcommand{\rmdefault}{cmss}  % times new roman font
+\usepackage{verbatim,a4,amsmath}
+\usepackage{epsfig,amssymb,array,delarray}
+\usepackage{tabularx,enumerate,alltt,float}
+\usepackage{rotating,wrapfig}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{longtable,color,boxedminipage}
+\usepackage{graphicx,lscape,ulem,enumitem,dashbox}
+\usepackage[most]{tcolorbox}
+\parindent0mm
+
+\usepackage[figurer/]{figurepath}
+\usepackage{here,hyperref}
+
+\usepackage{listings}
+\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
+\lstset{inputencoding=ansinew,
+literate=  {ø}{{\o}}1%
+{æ}{{\ae}}1%
+{å}{{\aa}}1%
+{Ø}{{\O}}1%
+{Æ}{{\AE}}1%
+{Å}{{\AA}}1%
+}
+
+\textheight210mm
+\textwidth145mm
+\marginparsep0mm
+\oddsidemargin10mm
+\parskip 2mm plus 2mm minus 2mm % gir TeX litt fleksibilitet for sidebrekk
+
+\lstset{language=Matlab,
+  % basicstyle = \tiny 
+}
+
+\begin{document}
+\renewcommand{\solutiontitle}{\noindent\textbf{}\par\noindent}
+\shadedsolutions
+\renewcommand{\thequestion}{\alph{question})}
+\renewcommand{\questionlabel}{\thequestion}
+\renewcommand{\solutiontitle}{\noindent\textbf{Svar:}\par\noindent}
+
+\renewcommand{\lstlistingname}{Kode}% Listing -> Kode
+\renewcommand{\thepage}{\arabic{page}}
+\cfoot{\thepage}
+
+\pagestyle{headandfoot}
+\runningheadrule
+\firstpageheader{}{}{}
+
+\selectlanguage{norsk}
+\setlength{\parskip}{0.5cm}
+
+\vspace*{2cm}
+
+\begin{center}
+  {\Large \bf ELE130 Anvendt matematikk og fysikk i robotprogrammering}\\[1cm]
+  \vspace*{2cm}
+  {\LARGE \bf  Øving 2 \\[5mm]
+    Introduksjon til \\[2mm]
+    simulering i Simulink\footnote{Tilhørende
+      filer: \fbox{\tt oving2\_skallfiler.zip} og {\LaTeX}-mal i
+      \fbox{\tt oving2\_Overleaf.zip}} }
+\end{center}
+
+% ********************************************************
+% Fyll inn navnet ditt
+% ********************************************************
+\begin{tcolorbox}
+  {\Large \bf  Levert av John David McGurk}
+\end{tcolorbox}
+
+% ********************************************************
+% Neste 3 linjer kan kommenteres ut ved innlevering
+% ********************************************************
+\newpage
+\runningheader{Fra {\tt oving2\_intro.tex}}{}{Side \thepage\ av \numpages}
+\input{oving2_intro}
+
+\newpage
+
+\runningheader{Nyttig {\LaTeX}-kode}{}{Side \thepage\ av \numpages}
+\begin{tcolorbox}[breakable, enhanced]
+  \section*{Forskjellig {\LaTeX}-kode}
+  Under er det gitt litt forskjellig kode som du kan kopiere inn i
+  svarene under de oppgavene du gjør. Husk bare på å oppdatere
+  bokmerkene til nye, unike navn, så slipper du feilreferering.
+
+  \begin{itemize}
+    \item    Resultatet fra scopet er vist i figur~\ref{fig:2a}.
+
+          \begin{figure}[H]
+            \centering
+
+            \hspace*{0mm}\scalebox{0.35}{\includegraphics{sett_inn_egen_fig.pdf}}
+            \caption{Resultat av blokkskjemaet i modellen. }
+            \label{fig:2a}
+          \end{figure}
+
+    \item Svaret er gitt i ligning~\eqref{eq:y}.
+          For å bruke kommandoen {\tt \textbackslash uuline} må du bruke pakken
+            {\tt ulem} som {\tt \textbackslash usepackage\{ulem\}}.
+          \begin{equation}
+            \label{eq:y}
+            y(25) = \uuline{4.2}
+          \end{equation}
+
+    \item Eksempel på bruk av {\tt align} er vist i
+          ligning~\eqref{eq:integral}.
+          \begin{align}
+            y(t) & = \int_{0}^{t} U \sin(\omega {\cdot}  \tau) d\tau +
+            y(0)\notag                                                 \\
+                 & =	 -\frac{U}{\omega}{\cdot}\cos(\omega{\cdot}\tau)
+            \Biggl|_{0}^{t}  + y(0)\notag
+            \\
+                 & =-\frac{U}{\omega}{\cdot}\cos(\omega{\cdot} t)
+            -\Bigl(-\frac{U}{\omega}\cos(0)\Bigl) + y(0)\notag
+            \\
+                 & = -\frac{U}{\omega}{\cdot}\cos(\omega{\cdot}t) +
+            \frac{U}{\omega} + y(0)  \label{eq:integral}
+          \end{align}
+
+    \item Du finner også mye \LaTeX-kode i hver av .tex-filene til
+          delxoppgavene.
+
+  \end{itemize}
+\end{tcolorbox}
+
+\newpage
+\section*{Om {\sf  Integrator}-blokken}
+
+\begin{enumerate}[label=\alph*)]
+
+  % ********************************************************
+  % oppgave a)
+  % ********************************************************
+  \input{oving2_a}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar}
+
+    \begin{enumerate}[label=a\arabic*)]
+      \item  Med utgangspunkt i ligning~\eqref{eq:integral}  og
+            $u(t){=}4$, er det matematiske uttrykket for $y(t)$ gitt som
+            \begin{align}
+              y(t) & = \int_{0}^{t} u(\tau) d\tau + y(0) \notag \\
+                   & = \int_{0}^{t}4d\tau +0 \notag             \\
+                   & = 4 \tau \Big|_0^t \notag                  \\
+                   & = 4t - 4 \cdot 0 \notag                    \\
+                   & = 4t
+            \end{align}
+
+      \item
+            \begin{align}
+              y(25) & = 4t \notag         \\
+                    & = 4 \cdot 25 \notag \\
+                    & = 100
+            \end{align}
+
+      \item
+            Vi ser på grafen at når $x=25$ så er $y=100$, som stemmer med det
+            vi fant
+            ut i deloppgave a2.
+            \begin{figure}[H]
+              \centering
+              \hspace*{0mm}\scalebox{0.65}
+              {\includegraphics{figurer/a3.pdf}}
+              \caption{Resultat av blokkskjemaet i modellen.
+                \label{fig:2a1}}
+            \end{figure}
+
+      \item
+            \begin{align}
+              y(t)  & = \int u(t) dt + y(0) \notag \\
+                    & = \int 4dt +10 \notag        \\
+                    & = 4 t + 10 \notag            \\
+              y(25) & = 4 \cdot 25 = 10\notag      \\
+                    & = 110
+            \end{align}
+
+            Vi ser at dette stemmer med resultatet fra koden i figuren vist
+            under.
+            \begin{figure}[H]
+              \centering
+              \hspace*{0mm}\scalebox{0.65}
+              {\includegraphics{figurer/a4.pdf}}
+              \caption{Resultat av blokkskjemaet i modellen.
+                \label{fig:2a2}}
+            \end{figure}
+    \end{enumerate}
+
+  \end{tcolorbox}
+
+  % ********************************************************
+  % oppgave b) 
+  % ********************************************************
+  \newpage
+  \input{oving2_b}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar (frivilllig)}
+
+    \begin{enumerate}[label=b\arabic*)]
+      \item
+
+      \item
+
+      \item
+
+    \end{enumerate}
+
+  \end{tcolorbox}
+
+  % ********************************************************
+  % oppgave c) 
+  % ********************************************************
+  \newpage
+  \input{oving2_c}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar}
+
+    \begin{enumerate}[label=c\arabic*)]
+      \item
+            \[u(t) = t^2\]
+
+      \item
+            \begin{align}
+              y(t) & = \int u(t)dt \notag \\
+                   & =\int t^2dt \notag   \\
+                   & = \frac{1}{3}t^3
+            \end{align}
+      \item
+
+            \parbox{\textwidth}{
+              \begin{figure}[H]
+                \centering
+                \hspace*{0mm}\scalebox{0.65}
+                {\includegraphics{figurer/c3.pdf}}
+                \captionof{figure}{Resultat av blokkskjemaet i
+                  modellen.}\label{fig:2c}
+              \end{figure}
+            }
+
+      \item
+            Det er visuelt tidlig at grafen vist i a3 er eksponentielt
+            stigende. Vi kan
+            sjekke at den stemmer med det analytiske uttrykket ved å sette inn
+            $x$ verdiene
+            fra grafen inn i utrykket.
+            \begin{align}
+              y(t)  & = \frac{1}{3}t^3 \notag         \\ \\
+              y(10) & = \frac{1}{3} \cdot 10^3 \notag \\
+                    & = \frac{1000}{3} \notag         \\
+                    & = 333.33 \notag                 \\ \\
+              y(25) & = \frac{1}{3} \cdot 25^3 \notag \\
+                    & = \frac{15625}{3} \notag        \\
+                    & = 5208.33
+            \end{align}
+
+    \end{enumerate}
+  \end{tcolorbox}
+
+  % ********************************************************
+  % oppgave d) 
+  % ********************************************************
+  \newpage
+  \input{oving2_d}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar}
+
+    \begin{enumerate}[label=d\arabic*)]
+      \item
+            \parbox{\textwidth}{
+              \begin{figure}[H]
+                \centering
+                \hspace{0mm}\scalebox{0.75}
+                {\includegraphics{figurer/2d_svar.pdf}}
+                \captionof{figure}{Resultat av blokkskjemaet i
+                  modellen.}\label{fig:2d1}
+              \end{figure}
+            }
+
+      \item
+            Den blå kurven viser plottet av den antideriverte/integrerte av
+            funksjonen $u(t)$. Den røde viser det samme, men det er satt en
+            maks og min grense for funksjonens resultat.
+
+      \item
+            Èn måte å implementere integratorbegrensning i kode kunne vaere å
+            bruke en if setning for å sjekke om resultatsverdien er over maks
+            eller under min, og om så bytt verdien ut hendholdsvis med maks
+            eller min verdien.
+
+      \item
+            Hvis initialverdien er satt til 40 på integrator med begrensning,
+            vil resultatet av $y(t)$ forbli på 0 frem til $u(t)$ går under 0
+            (dette skjer
+            ved $t=9$ i denne simuleringen). Etter det punktet fortsetter den
+            som i tidligere deloppgaver.
+
+      \item
+            Den intuitive forklaringen er at $u(t)$ beskriver stigningstallet
+            til $y(t)$, altså hvor mye funksjonen stiger eller minker ved en
+            gitt
+            tidspunkt. Når $u(t)$ går til 0 vil dette si stigningstallet til
+            $y(t)$ er 0,
+            det vil di den vil verken stige eller minke.
+    \end{enumerate}
+
+  \end{tcolorbox}
+
+  % ********************************************************
+  % oppgave e) 
+  % ********************************************************
+  \newpage
+  \input{oving2_e}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar (frivillig)}
+
+    \begin{enumerate}[label=e\arabic*)]
+      \item
+      \item
+
+      \item
+
+      \item
+
+    \end{enumerate}
+
+  \end{tcolorbox}
+
+  \newpage
+  \section*{Om {\sf  Sine Wave}-blokken}
+
+  % ********************************************************
+  % oppgave f) 
+  % ********************************************************
+  \input{oving2_f}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar}
+
+    \begin{enumerate}[label=f\arabic*)]
+      \item
+            \parbox{\textwidth}{
+              \begin{figure}[H]
+                \centering
+                \hspace{0mm}\scalebox{0.30}
+                {\includegraphics{figurer/2_f1.png}}
+                \captionof{figure}{Skjermdump av blokkskjemaet i
+                  modellen.}\label{fig:2f1}
+              \end{figure}
+            }
+
+      \item
+            \parbox{\textwidth}{
+              \begin{figure}[H]
+                \centering
+                \hspace{0mm}\scalebox{0.75}
+                {\includegraphics{figurer/2f2.pdf}}
+                \captionof{figure}{Resultat av blokkskjemaet i
+                  modellen.}\label{fig:2f2}
+              \end{figure}
+            }
+      \item
+            Amplituden $U$ kan regnes ut ved å først lese av høy og lavpunkter
+            fra grafen og så regne ut $\frac{\text{h{\o}y} + \text{lav}}{2}$.
+            Fra denne graven kan vi se høy = 5.2 og lav = 1.2. Setter vi dette
+            inn så får vi:
+            \begin{align}
+              U & = \frac{5.2+1.2}{2} \notag \\
+                & =\frac{6.4}{2} \notag      \\
+                & =3.2
+            \end{align}
+
+            Frekvensen kan regnes ut ved å lese av periodetiden til kurven
+            (enklest i dette tilfellet å lese av hvor kurven først går til 0
+            med positiv stigning), og så regner vi ut $\frac{2 \pi}{\text{periode}}. Perioden er circa ved 5.24 sekunder her.
+
+    \end{enumerate}
+
+  \end{tcolorbox}
+
+  % ********************************************************
+  % oppgave g) 
+  % ********************************************************
+  \newpage
+  \input{oving2_g}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar}
+
+    \begin{enumerate}[label=g\arabic*)]
+
+      \item
+
+      \item
+
+      \item
+
+    \end{enumerate}
+
+  \end{tcolorbox}
+
+  % ********************************************************
+  % oppgave h) 
+  % ********************************************************
+  \newpage
+  \input{oving2_h}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar (frivillig)}
+
+  \end{tcolorbox}
+
+  \newpage
+  \section*{Om {\sf  Lookup Table}-blokken}
+
+  % ********************************************************
+  % oppgave i) 
+  % ********************************************************
+  \input{oving2_i}
+
+  \newpage
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar}
+
+    \begin{enumerate}[label=i\arabic*)]
+
+      \item
+      \item
+
+      \item
+      \item
+      \item
+
+    \end{enumerate}
+
+  \end{tcolorbox}
+
+  % ********************************************************
+  % oppgave j) 
+  % ********************************************************
+  \newpage
+  \input{oving2_j}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar (frivillig)}
+
+  \end{tcolorbox}
+
+  % ********************************************************
+  % oppgave k) 
+  % ********************************************************
+  \newpage
+  \input{oving2_k}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar (frivillig)}
+
+    \begin{enumerate}[label=k\arabic*)]
+      \item
+
+      \item
+      \item
+
+      \item
+
+    \end{enumerate}
+
+  \end{tcolorbox}
+
+  % ********************************************************
+  % oppgave l) 
+  % ********************************************************
+  \newpage
+  \input{oving2_l}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar (frivillig)}
+
+  \end{tcolorbox}
+
+  \newpage
+  \section*{Litt diverse}
+
+  % ********************************************************
+  % oppgave m) 
+  % ********************************************************
+  \input{oving2_m}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar (frivillig)}
+
+  \end{tcolorbox}
+
+  % ********************************************************
+  % oppgave n) 
+  % ********************************************************
+  \newpage
+  \input{oving2_n}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar (frivillig)}
+
+  \end{tcolorbox}
+
+  % ********************************************************
+  % oppgave o) 
+  % ********************************************************
+  \newpage
+  \input{oving2_o}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar}
+
+    \begin{enumerate}[label=o\arabic*)]
+      \item
+
+      \item
+
+    \end{enumerate}
+
+  \end{tcolorbox}
+
+  % ********************************************************
+  % oppgave p) 
+  % ********************************************************
+  \newpage
+  \input{oving2_p}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar}
+
+    \begin{enumerate}[label=p\arabic*)]
+      \item
+
+      \item
+
+    \end{enumerate}
+
+  \end{tcolorbox}
+
+  \newpage
+  \section*{PID-regulatoren}
+
+  % ********************************************************
+  % oppgave q) 
+  % ********************************************************
+  \input{oving2_q}
+
+  \begin{tcolorbox}[breakable, enhanced]
+    \subsection*{Svar}
+
+    \begin{enumerate}[label=q\arabic*)]
+      \item
+
+      \item
+
+      \item
+
+      \item
+
+    \end{enumerate}
+
+  \end{tcolorbox}
+
+  \newpage
+
+\end{enumerate}
+
+\end{document}
